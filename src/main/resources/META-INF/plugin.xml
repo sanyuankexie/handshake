@@ -30,7 +30,7 @@
         <!-- Add your actions here -->
         <action id="com.guet.flexbox.handshake.new"
                 class="com.guet.flexbox.handshake.NewFlexmlAction"
-                text="New Flexml"
+                text="Flexml File"
                 description="新建flexml dsl文件">
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
         </action>

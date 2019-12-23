@@ -1,6 +1,7 @@
 package com.guet.flexbox.handshake
 
 import com.intellij.CommonBundle
+import com.intellij.icons.AllIcons
 import com.intellij.ide.actions.CreateElementActionBase
 import com.intellij.ide.fileTemplates.FileTemplateManager
 import com.intellij.openapi.project.Project
@@ -10,7 +11,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.codeStyle.CodeStyleManager
 
-class NewFlexmlAction : CreateElementActionBase() {
+class NewFlexmlAction : CreateElementActionBase("", "", AllIcons.FileTypes.Xml) {
 
     override fun invokeDialog(project: Project?, directory: PsiDirectory?): Array<PsiElement> {
         val inputValidator = this.MyInputValidator(project, directory)
@@ -47,4 +48,5 @@ class NewFlexmlAction : CreateElementActionBase() {
     override fun getCommandName(): String = "Create Flexml File"
 
     override fun getErrorTitle(): String = CommonBundle.getErrorTitle()
+
 }
