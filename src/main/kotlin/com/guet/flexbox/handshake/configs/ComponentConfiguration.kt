@@ -1,7 +1,6 @@
 package com.guet.flexbox.handshake.configs
 
 import com.google.gson.Gson
-import java.util.*
 
 object ComponentConfiguration {
 
@@ -9,10 +8,16 @@ object ComponentConfiguration {
 
     init {
         val gson = Gson()
-        components = Collections.list(
-            javaClass.classLoader.getResources("flexml-components")
-        ).map {
-            val input = it.openStream().reader()
+        val classLoader = javaClass.classLoader
+        val group = classLoader.getResource("flexml-components/package.json")!!
+            .openStream()
+            .reader()
+        val arr = gson.fromJson(
+            group, ComponentsPackage::class.java
+        ).components
+        group.close()
+        components = arr.map {
+            val input = classLoader.getResourceAsStream(it)!!.reader()
             val r = gson.fromJson(input, ComponentInfo::class.java)
             input.close()
             return@map r
@@ -25,5 +30,4 @@ object ComponentConfiguration {
         }.map {
             it.name
         }
-
 }
