@@ -1,0 +1,8 @@
+{
+  "name": "for",
+  "attrs": {
+    "test": {
+      "required": true
+    }
+  }
+}

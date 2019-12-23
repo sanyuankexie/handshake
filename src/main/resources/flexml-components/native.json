@@ -1,0 +1,9 @@
+{
+  "parent": "Common",
+  "name": "Native",
+  "attrs": {
+    "type": {
+      "required": true
+    }
+  }
+}
