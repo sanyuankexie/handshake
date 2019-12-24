@@ -56,7 +56,6 @@ class FlexmlCompletionContributor : CompletionContributor() {
                     }
                 }
             })
-
         extend(
             CompletionType.BASIC, PlatformPatterns.psiElement(),
             object : CompletionProvider<CompletionParameters>() {

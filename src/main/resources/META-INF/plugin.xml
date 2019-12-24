@@ -42,6 +42,7 @@
     <depends>com.intellij.modules.json</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <configurationType implementation="com.guet.flexbox.handshake.FlexmlMockConfigurationType"/>
         <internalFileTemplate name="flexml_file"/>
         <completion.contributor
                 language="XML"

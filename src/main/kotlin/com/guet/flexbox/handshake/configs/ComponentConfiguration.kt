@@ -4,7 +4,7 @@ import com.google.gson.Gson
 
 object ComponentConfiguration {
 
-    private val visibleComponents: Map<String, Map<String, AttributeInfo?>?>
+    private val components: Map<String, Map<String, AttributeInfo?>?>
 
     init {
         val gson = Gson()
@@ -16,7 +16,7 @@ object ComponentConfiguration {
             group, ComponentGroup::class.java
         ).components
         group.close()
-        val components = arr.map {
+        val componentInfoArray = arr.map {
             val input = classLoader.getResourceAsStream(it)!!.reader()
             val r = gson.fromJson(input, ComponentInfo::class.java)
             input.close()
@@ -24,7 +24,6 @@ object ComponentConfiguration {
         }
 
         fun loadAttribute(
-            components: List<ComponentInfo>,
             result: HashMap<String, AttributeInfo?>,
             com: ComponentInfo
         ) {
@@ -32,28 +31,28 @@ object ComponentConfiguration {
                 result.putAll(it)
             }
             val parent = com.parent?.let { name ->
-                components.first {
+                componentInfoArray.first {
                     name == it.name
                 }
             }
             if (parent == null) {
                 return
             } else {
-                loadAttribute(components, result, parent)
+                loadAttribute(result, parent)
             }
         }
-        visibleComponents = components.filter { !it.abstract }
+        components = componentInfoArray.filter { !it.abstract }
             .map {
                 val map = HashMap<String, AttributeInfo?>()
-                loadAttribute(components, map, it)
+                loadAttribute(map, it)
                 it.name to map
             }.toMap()
     }
 
     val allComponentNames: Set<String>
-        get() = visibleComponents.keys
+        get() = components.keys
 
     fun getAttributeInfoByComponentName(name: String): Map<String, AttributeInfo?> {
-        return visibleComponents[name] ?: emptyMap()
+        return components[name] ?: emptyMap()
     }
 }

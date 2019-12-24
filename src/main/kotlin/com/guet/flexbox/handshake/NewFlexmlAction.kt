@@ -16,8 +16,8 @@ class NewFlexmlAction : CreateElementActionBase("", "", fileIcon) {
         val inputValidator = this.MyInputValidator(project, directory)
         Messages.showInputDialog(
             project,
-            "创建一个新的flexml文件",
-            "创建一个新的flexml文件",
+            "New a flexml dsl file",
+            "New a flexml dsl file",
             null,
             "",
             inputValidator
