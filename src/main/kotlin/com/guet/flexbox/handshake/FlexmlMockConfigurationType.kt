@@ -9,7 +9,7 @@ class FlexmlMockConfigurationType : ConfigurationTypeBase(
     "FlexmlMock",
     "Flexml mock",
     "begin run flexml mock task",
-    tagIcon
+    fileIcon
 ) {
     init {
         addFactory(object : ConfigurationFactory(this) {
