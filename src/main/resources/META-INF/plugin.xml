@@ -41,6 +41,10 @@
     <depends>com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <internalFileTemplate name="flexml_file"/>
+        <completion.contributor
+                language="XML"
+                implementationClass="com.guet.flexbox.handshake.FlexmlCompletionContributor"/>
         <fileTypeFactory implementation="com.guet.flexbox.handshake.FlexmlFileTypeFactory"/>
         <xml.tagNameProvider implementation="com.guet.flexbox.handshake.FlexmlTagNameProvider"/>
     </extensions>

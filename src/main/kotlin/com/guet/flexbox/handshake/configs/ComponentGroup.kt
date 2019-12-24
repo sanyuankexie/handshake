@@ -1,5 +1,5 @@
 package com.guet.flexbox.handshake.configs
 
-data class ComponentsPackage(
+data class ComponentGroup(
     val components: List<String>
 )

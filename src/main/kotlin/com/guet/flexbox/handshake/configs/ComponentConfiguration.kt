@@ -4,7 +4,7 @@ import com.google.gson.Gson
 
 object ComponentConfiguration {
 
-    private val components: List<ComponentInfo>
+    private val visibleComponents: Map<String, Map<String, AttributeInfo?>?>
 
     init {
         val gson = Gson()
@@ -13,21 +13,47 @@ object ComponentConfiguration {
             .openStream()
             .reader()
         val arr = gson.fromJson(
-            group, ComponentsPackage::class.java
+            group, ComponentGroup::class.java
         ).components
         group.close()
-        components = arr.map {
+        val components = arr.map {
             val input = classLoader.getResourceAsStream(it)!!.reader()
             val r = gson.fromJson(input, ComponentInfo::class.java)
             input.close()
             return@map r
         }
+
+        fun loadAttribute(
+            components: List<ComponentInfo>,
+            result: HashMap<String, AttributeInfo?>,
+            com: ComponentInfo
+        ) {
+            com.attrs?.let {
+                result.putAll(it)
+            }
+            val parent = com.parent?.let { name ->
+                components.first {
+                    name == it.name
+                }
+            }
+            if (parent == null) {
+                return
+            } else {
+                loadAttribute(components, result, parent)
+            }
+        }
+        visibleComponents = components.filter { !it.abstract }
+            .map {
+                val map = HashMap<String, AttributeInfo?>()
+                loadAttribute(components, map, it)
+                it.name to map
+            }.toMap()
     }
 
-    val allComponentNames: List<String>
-        get() = components.filter {
-            !it.abstract
-        }.map {
-            it.name
-        }
+    val allComponentNames: Set<String>
+        get() = visibleComponents.keys
+
+    fun getAttributeInfoByComponentName(name: String): Map<String, AttributeInfo?> {
+        return visibleComponents[name] ?: emptyMap()
+    }
 }

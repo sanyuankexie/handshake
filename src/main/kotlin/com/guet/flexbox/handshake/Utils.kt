@@ -2,6 +2,7 @@ package com.guet.flexbox.handshake
 
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiElement
+import java.util.*
 
 
 val PsiElement.isOnFlexmlFile: Boolean
@@ -13,8 +14,11 @@ val PsiElement.isOnFlexmlFile: Boolean
         }
     }
 
-val fileIcon = IconLoader.getIcon("icons/icon_file.png").apply {
-
-}
+val fileIcon = IconLoader.getIcon("icons/icon_file.png")
 
 val tagIcon = IconLoader.getIcon("icons/icon_tag.png")
+
+private val resourceBundle = ResourceBundle.getBundle("strings")
+
+
+fun String.getString(): String = resourceBundle.getString(this)
