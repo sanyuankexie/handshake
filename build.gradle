@@ -14,6 +14,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.dom4j:dom4j:2.1.1'
     implementation 'com.google.zxing:core:3.4.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'org.apache.tomcat.embed:tomcat-embed-el:9.0.30'
