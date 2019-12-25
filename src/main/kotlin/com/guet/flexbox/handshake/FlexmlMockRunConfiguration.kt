@@ -12,9 +12,11 @@ import com.intellij.openapi.project.Project
 class FlexmlMockRunConfiguration(project: Project, factory: ConfigurationFactory) :
     RunConfigurationBase<Any>(project, factory, "Mock configuration") {
 
+    var port: Int = 8080
+
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> = FlexmlMockSettingsEditor()
 
     override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState? {
-        return FlexmlMockCommandLineState(environment)
+        return FlexmlMockCommandLineState(this, environment)
     }
 }

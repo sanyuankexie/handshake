@@ -1,6 +1,7 @@
 package com.guet.flexbox.handshake
 
 import com.guet.flexbox.handshake.configs.ComponentConfiguration
+import com.guet.flexbox.handshake.configs.SupportType
 import com.intellij.codeInsight.completion.*
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.icons.AllIcons
@@ -10,6 +11,8 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlElementType
 import com.intellij.util.ProcessingContext
+import java.awt.Toolkit
+import java.awt.datatransfer.DataFlavor
 
 class FlexmlCompletionContributor : CompletionContributor() {
 
@@ -56,8 +59,7 @@ class FlexmlCompletionContributor : CompletionContributor() {
                     }
                 }
             })
-        extend(
-            CompletionType.BASIC, PlatformPatterns.psiElement(),
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement(),
             object : CompletionProvider<CompletionParameters>() {
                 override fun addCompletions(
                     parameters: CompletionParameters,
@@ -81,7 +83,26 @@ class FlexmlCompletionContributor : CompletionContributor() {
                                     LookupElementBuilder.create(it)
                                         .withIcon(AllIcons.FileTypes.Xml)
                                 })
+                                if (attrValues.support?.contains(SupportType.URL) == true) {
+                                    val trans = Toolkit.getDefaultToolkit()
+                                        .systemClipboard
+                                        .getContents(null)
+                                    if (trans != null && trans.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                                        try {
+                                            val text = trans.getTransferData(DataFlavor.stringFlavor) as? String
+                                            if (!text.isNullOrEmpty() && text.isUrl) {
+                                                result.addElement(
+                                                    LookupElementBuilder.create(text)
+                                                        .withIcon(AllIcons.FileTypes.Html)
+                                                )
+                                            }
+                                        } catch (e: Exception) {
+
+                                        }
+                                    }
+                                }
                             }
+
                         }
                     }
                 }
