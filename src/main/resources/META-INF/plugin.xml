@@ -43,8 +43,10 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <configurationType implementation="com.guet.flexbox.handshake.FlexmlMockConfigurationType"/>
+        <runConfigurationProducer implementation="com.guet.flexbox.handshake.FlexmlMockRunConfigurationProducer"/>
         <runLineMarkerContributor
                 language="XML"
+                order="after applicationRunLineMarkerProvider"
                 implementationClass="com.guet.flexbox.handshake.FlexmlRunLineMarkerContributor"/>
         <internalFileTemplate name="flexml_file"/>
         <completion.contributor

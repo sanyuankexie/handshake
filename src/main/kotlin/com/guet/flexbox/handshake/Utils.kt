@@ -7,7 +7,6 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.regex.Pattern
 
-
 val PsiElement.isOnFlexmlFile: Boolean
     get() {
         return if (this.containingFile != null) {
@@ -23,7 +22,6 @@ val fileIcon = IconLoader.getIcon("icons/icon_file.png")
 val tagIcon = IconLoader.getIcon("icons/icon_tag.png")
 
 private val resourceBundle = ResourceBundle.getBundle("strings")
-
 
 val String.isUrl: Boolean
     get() {

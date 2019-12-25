@@ -28,11 +28,12 @@ class FlexmlMockCommandLineState(
         private val configuration: FlexmlMockRunConfiguration
     ) : ProcessHandler(), KillableProcess {
 
-        private lateinit var form: QrCodeForm
+        private var form: QrCodeForm? = null
 
-        private val server = HttpServer.create(InetSocketAddress(configuration.port), 0)
+        private var server: HttpServer? = null
 
         override fun startNotify() {
+            val server = HttpServer.create(InetSocketAddress(configuration.port), 0)
             server.executor = singleTask
             server.createContext("/layout") { httpExchange ->
                 notifyTextAvailable(
@@ -55,12 +56,13 @@ class FlexmlMockCommandLineState(
                 notifyTextAvailable("数据地址：$url/data\n", ProcessOutputTypes.STDOUT)
                 server.start()
                 EventQueue.invokeLater {
-                    form = QrCodeForm(url)
+                    val form = QrCodeForm(url)
                     form.addWindowListener(object : WindowAdapter() {
                         override fun windowClosing(e: WindowEvent?) {
                             killProcess()
                         }
                     })
+                    this.form = form
                 }
             } else {
                 notifyTextAvailable(
@@ -70,16 +72,17 @@ class FlexmlMockCommandLineState(
                 )
                 throw RuntimeException("搜索本机IP时出错")
             }
+            this.server = server
             super.startNotify()
         }
 
         override fun killProcess() {
             EventQueue.invokeLater {
-                if (this::form.isInitialized) {
-                    form.dispose()
-                }
+                this.form?.dispose()
+                this.form = null
             }
-            server.stop(0)
+            server?.stop(0)
+            server = null
             notifyProcessTerminated(0)
         }
 
