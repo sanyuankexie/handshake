@@ -14,10 +14,11 @@ class FlexmlMockRunConfiguration(project: Project, factory: ConfigurationFactory
 
     var port: Int = 8080
 
+    var packageLocation: String? = null
+
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> = FlexmlMockSettingsEditor()
 
     override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState? {
-
         return FlexmlMockCommandLineState(this, environment)
     }
 }

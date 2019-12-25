@@ -5,6 +5,7 @@ import javax.swing.*;
 public class FlexmlSettingFrom {
     public JPanel wrapPanel;
     public JTextField textInput;
+    public JTextField packageLocation;
 
     FlexmlSettingFrom(){
         textInput.setInputVerifier(new InputVerifier() {

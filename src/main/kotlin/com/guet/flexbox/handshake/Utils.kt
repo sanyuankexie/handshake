@@ -3,8 +3,6 @@ package com.guet.flexbox.handshake
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiElement
 import java.util.*
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import java.util.regex.Pattern
 
 val PsiElement.isOnFlexmlFile: Boolean
@@ -28,8 +26,6 @@ val String.isUrl: Boolean
         val regex = "http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?"
         return match(regex, this)
     }
-
-val singleTask: ExecutorService = Executors.newSingleThreadExecutor()
 
 private fun match(regex: String, str: String): Boolean {
     val pattern = Pattern.compile(regex)

@@ -5,6 +5,7 @@ import com.intellij.execution.configurations.CommandLineState
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessOutputTypes
 import com.intellij.execution.runners.ExecutionEnvironment
+import com.intellij.util.concurrency.AppExecutorUtil
 import com.sun.net.httpserver.HttpServer
 import java.awt.EventQueue
 import java.awt.event.WindowAdapter
@@ -34,7 +35,7 @@ class FlexmlMockCommandLineState(
 
         override fun startNotify() {
             val server = HttpServer.create(InetSocketAddress(configuration.port), 0)
-            server.executor = singleTask
+            server.executor = AppExecutorUtil.getAppExecutorService()
             server.createContext("/layout") { httpExchange ->
                 notifyTextAvailable(
                     httpExchange.remoteAddress.toString() + " request layout",
@@ -52,8 +53,8 @@ class FlexmlMockCommandLineState(
             val address = findHostAddress()
             if (address != null) {
                 val url = "http://$address:${configuration.port}"
-                notifyTextAvailable("布局地址：$url/layout\n", ProcessOutputTypes.STDOUT)
-                notifyTextAvailable("数据地址：$url/data\n", ProcessOutputTypes.STDOUT)
+                notifyTextAvailable("layout url：$url/layout\n", ProcessOutputTypes.STDOUT)
+                notifyTextAvailable("data source url：$url/data\n", ProcessOutputTypes.STDOUT)
                 server.start()
                 EventQueue.invokeLater {
                     val form = QrCodeForm(url)
@@ -101,7 +102,6 @@ class FlexmlMockCommandLineState(
         }
 
         companion object {
-
             private fun findHostAddress(): String? {
                 try {
                     val allNetInterfaces = NetworkInterface

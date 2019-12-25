@@ -6,14 +6,14 @@ import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.intellij.ui.JBColor
+import com.intellij.util.concurrency.AppExecutorUtil
 import com.intellij.util.ui.UIUtil
-import java.awt.Graphics
+import org.jdesktop.swingx.JXImageView
+import java.awt.EventQueue
 import java.awt.Graphics2D
 import java.awt.Toolkit
 import java.awt.image.BufferedImage
 import javax.swing.JFrame
-import javax.swing.JPanel
-
 
 class QrCodeForm(url: String) : JFrame() {
 
@@ -24,12 +24,11 @@ class QrCodeForm(url: String) : JFrame() {
         setSize(size, size)
         isResizable = false
         val content = contentPane
-        val image = singleTask.submit<BufferedImage> {
-            generateQR(url, size)
-        }
-        val panel = object : JPanel() {
-            override fun paintComponent(g: Graphics) {
-                g.drawImage(image.get(), 0, 0, size, size, null)
+        val panel = JXImageView()
+        AppExecutorUtil.getAppExecutorService().execute {
+            val image = generateQR(url, size)
+            EventQueue.invokeLater {
+                panel.image = image
             }
         }
         panel.setSize(size, size)
