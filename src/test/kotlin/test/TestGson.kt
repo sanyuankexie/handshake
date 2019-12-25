@@ -1,7 +1,10 @@
 package test
 
-import com.guet.flexbox.handshake.configs.ComponentConfiguration
+import com.guet.flexbox.handshake.QrCodeForm
 
 fun main(args: Array<String>) {
-    println(ComponentConfiguration.allComponentNames)
+    QrCodeForm("adasdasdasdasd").apply {
+        isVisible = true
+    }
+    System.`in`.read()
 }
