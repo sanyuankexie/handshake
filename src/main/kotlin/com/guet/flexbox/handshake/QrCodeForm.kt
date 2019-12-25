@@ -40,13 +40,12 @@ class QrCodeForm(url: String) : JFrame() {
         val screenSize = kit.screenSize //获取屏幕的尺寸
         val screenWidth = screenSize.width //获取屏幕的宽
         val screenHeight = screenSize.height //获取屏幕的高
+        isAlwaysOnTop = true
         setLocation(screenWidth / 2 - windowWidth / 2, screenHeight / 2 - windowHeight / 2)//设置窗口居中显示
     }
 
 
     companion object {
-
-
         /**
          * Generating a qr code with provided content
          *
