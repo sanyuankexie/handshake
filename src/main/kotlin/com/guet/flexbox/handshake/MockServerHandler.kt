@@ -23,19 +23,12 @@ class MockServerHandler(
         val server = HttpServer.create(InetSocketAddress(configuration.port), 0)
         server.executor = AppExecutorUtil.getAppExecutorService()
         server.createContext("/layout") { httpExchange ->
-            println(
-                httpExchange.remoteAddress.toString() + " request layout"
-            )
+            println(httpExchange.remoteAddress.toString() + " request layout")
             httpExchange.sendResponseHeaders(200, 0)
         }
         server.createContext("/data") { httpExchange ->
-            println(
-                httpExchange.remoteAddress.toString() + " request layout"
-            )
+            println(httpExchange.remoteAddress.toString() + " request layout")
             httpExchange.sendResponseHeaders(200, 0)
-        }
-        AppExecutorUtil.getAppExecutorService().submit {
-
         }
         val address = findHostAddress()
         if (address != null) {
@@ -59,7 +52,7 @@ class MockServerHandler(
                         "sure that the mobile phone and the computer are on the same network",
                 ProcessOutputTypes.STDERR
             )
-            throw RuntimeException("Error searching for native IP")
+            throw RuntimeException("Error searching for local IP")
         }
     }
 
