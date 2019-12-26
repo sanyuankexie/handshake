@@ -1,14 +1,11 @@
 package com.guet.flexbox.handshake
 
-import com.intellij.execution.KillableProcess
-import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessOutputTypes
 import com.intellij.util.concurrency.AppExecutorUtil
 import com.sun.net.httpserver.HttpServer
 import java.awt.EventQueue
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
-import java.io.OutputStream
 import java.net.Inet4Address
 import java.net.InetAddress
 import java.net.InetSocketAddress
@@ -16,35 +13,36 @@ import java.net.NetworkInterface
 
 class MockServerHandler(
     private val configuration: FlexmlMockRunConfiguration
-) : ProcessHandler(), KillableProcess {
+) : EmbeddedProcessHandler() {
 
     private var form: QrCodeForm? = null
 
     private var server: HttpServer? = null
 
-    override fun startNotify() {
+    override fun onStart() {
         val server = HttpServer.create(InetSocketAddress(configuration.port), 0)
         server.executor = AppExecutorUtil.getAppExecutorService()
         server.createContext("/layout") { httpExchange ->
-            notifyTextAvailable(
-                httpExchange.remoteAddress.toString() + " request layout",
-                ProcessOutputTypes.STDOUT
+            println(
+                httpExchange.remoteAddress.toString() + " request layout"
             )
             httpExchange.sendResponseHeaders(200, 0)
         }
         server.createContext("/data") { httpExchange ->
-            notifyTextAvailable(
-                httpExchange.remoteAddress.toString() + " request layout",
-                ProcessOutputTypes.STDOUT
+            println(
+                httpExchange.remoteAddress.toString() + " request layout"
             )
             httpExchange.sendResponseHeaders(200, 0)
+        }
+        AppExecutorUtil.getAppExecutorService().submit {
+
         }
         val address = findHostAddress()
         if (address != null) {
             val url = "http://$address:${configuration.port}"
-            notifyTextAvailable("layout url：$url/layout\n", ProcessOutputTypes.STDOUT)
-            notifyTextAvailable("data source url：$url/data\n", ProcessOutputTypes.STDOUT)
+            println("host url：$url")
             server.start()
+            this.server = server
             EventQueue.invokeLater {
                 val form = QrCodeForm(url)
                 form.addWindowListener(object : WindowAdapter() {
@@ -56,17 +54,16 @@ class MockServerHandler(
             }
         } else {
             notifyTextAvailable(
-                "搜索本机IP时出错，请检查机器的在网状态，" +
-                        "并确保手机和电脑在同一网络中\n",
+                "An error occurred while searching the local IP address. " +
+                        "Please check the network status of the machine and make " +
+                        "sure that the mobile phone and the computer are on the same network",
                 ProcessOutputTypes.STDERR
             )
-            throw RuntimeException("搜索本机IP时出错")
+            throw RuntimeException("Error searching for native IP")
         }
-        this.server = server
-        super.startNotify()
     }
 
-    override fun killProcess() {
+    override fun onDestroy() {
         EventQueue.invokeLater {
             this.form?.dispose()
             this.form = null
@@ -74,20 +71,6 @@ class MockServerHandler(
         server?.stop(0)
         server = null
         notifyProcessTerminated(0)
-    }
-
-    override fun canKillProcess(): Boolean = true
-
-    override fun getProcessInput(): OutputStream = NullOutputStream
-
-    override fun detachIsDefault(): Boolean = true
-
-    override fun detachProcessImpl() {
-        killProcess()
-    }
-
-    override fun destroyProcessImpl() {
-        killProcess()
     }
 
     companion object {
