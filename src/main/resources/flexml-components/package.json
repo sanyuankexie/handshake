@@ -13,6 +13,6 @@
     "flexml-components/stack.json",
     "flexml-components/image.json",
     "flexml-components/scroller.json",
-    "flexml-components/case.json"
+    "flexml-components/if.json"
   ]
 }

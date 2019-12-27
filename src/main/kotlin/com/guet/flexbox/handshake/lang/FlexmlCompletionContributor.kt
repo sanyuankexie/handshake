@@ -36,6 +36,16 @@ class FlexmlCompletionContributor : CompletionContributor() {
                         .findReferenceAt(parameters.offset)
                     if (reference is XmlAttributeReference) {
                         val declarationTag = reference.element.parent
+                        if (declarationTag?.name == "case") {
+                            result.addElement(
+                                LookupElementBuilder.create("test")
+                                    .withInsertHandler(XmlAttributeInsertHandler.INSTANCE)
+                                    .withBoldness(true)
+                                    .withIcon(tagIcon)
+                                    .withTypeText("case attribute (required)")
+                            )
+                            return
+                        }
                         result.addAllElements(
                             ComponentConfiguration
                                 .getAttributeInfoByComponentName(declarationTag.name)
@@ -104,6 +114,7 @@ class FlexmlCompletionContributor : CompletionContributor() {
                                         }
                                     }
                                 }
+
                             }
 
                         }
