@@ -1,5 +1,7 @@
 package com.guet.flexbox.handshake.mock
 
+import com.google.gson.internal.Streams
+import com.google.gson.stream.JsonWriter
 import com.guet.flexbox.handshake.compile.Compiler
 import com.guet.flexbox.handshake.util.EmbeddedHandler
 import com.intellij.execution.process.ProcessOutputTypes
@@ -8,7 +10,10 @@ import com.sun.net.httpserver.HttpServer
 import java.awt.EventQueue
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
-import java.io.*
+import java.io.File
+import java.io.PrintWriter
+import java.io.RandomAccessFile
+import java.io.StringWriter
 import java.net.Inet4Address
 import java.net.InetAddress
 import java.net.InetSocketAddress
@@ -43,10 +48,17 @@ class MockServerHandler(
             println(httpExchange.remoteAddress.toString() + " request layout")
             try {
                 httpExchange.sendResponseHeaders(200, 0)
-                val os = OutputStreamWriter(httpExchange.responseBody)
-                val string = Compiler.compile(template)
-                os.write(string)
-                os.close()
+                JsonWriter(
+                    httpExchange.responseBody
+                        .writer()
+                        .buffered()
+                ).apply {
+                    isLenient = true
+                }.use { writer ->
+                    val jsonObject = Compiler.compile(template)
+                    Streams.write(jsonObject, writer)
+                }
+
             } catch (e: Exception) {
                 val w = StringWriter()
                 e.printStackTrace(PrintWriter(w))

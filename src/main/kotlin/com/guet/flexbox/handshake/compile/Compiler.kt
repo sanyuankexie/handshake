@@ -10,12 +10,12 @@ object Compiler {
 
     private val sax = SAXReader()
 
-    fun compile(layout: String): String {
+    fun compile(layout: String): JsonObject {
         return toJson(
             sax.read(
                 File(layout)
             ).rootElement
-        ).toString()
+        )
     }
 
     private fun toJson(element: Element): JsonObject {
