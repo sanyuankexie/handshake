@@ -3,7 +3,6 @@ package com.guet.flexbox.handshake.util
 import com.guet.flexbox.handshake.lang.FlexmlFileType
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiElement
-import java.util.*
 import java.util.regex.Pattern
 
 val PsiElement.isOnFlexmlFile: Boolean
@@ -16,11 +15,10 @@ val PsiElement.isOnFlexmlFile: Boolean
         }
     }
 
+
 val fileIcon = IconLoader.getIcon("icons/icon_file.png")
 
 val tagIcon = IconLoader.getIcon("icons/icon_tag.png")
-
-private val resourceBundle = ResourceBundle.getBundle("strings")
 
 val String.isUrl: Boolean
     get() {
@@ -34,5 +32,3 @@ private fun match(regex: String, str: String): Boolean {
     return matcher.matches()
 }
 
-
-fun String.getString(): String = resourceBundle.getString(this)

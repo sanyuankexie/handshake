@@ -4,6 +4,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import org.dom4j.Element
 import org.dom4j.io.SAXReader
+import java.io.File
 
 object Compiler {
 
@@ -12,7 +13,7 @@ object Compiler {
     fun compile(layout: String): String {
         return toJson(
             sax.read(
-                layout
+                File(layout)
             ).rootElement
         ).toString()
     }

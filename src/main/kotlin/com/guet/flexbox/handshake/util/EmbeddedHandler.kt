@@ -5,11 +5,13 @@ import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessOutputTypes
 import java.io.OutputStream
 
-abstract class EmbeddedProcessHandler : ProcessHandler(), KillableProcess {
+abstract class EmbeddedHandler : ProcessHandler(), KillableProcess {
 
     abstract fun onStart()
 
-    abstract fun onDestroy()
+    open fun onDestroy(){
+        notifyProcessTerminated(0)
+    }
 
     fun println(text: String) {
         notifyTextAvailable(text + "\n", ProcessOutputTypes.STDOUT)

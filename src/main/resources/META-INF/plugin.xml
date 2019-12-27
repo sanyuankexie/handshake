@@ -28,27 +28,40 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="com.guet.flexbox.handshake.new"
+        <action id="com.guet.flexbox.handshake.new.flexml"
                 class="com.guet.flexbox.handshake.lang.NewFlexmlAction"
                 text="Flexml File"
-                description="新建flexml dsl文件">
+                description="New flexml dsl file">
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
+        </action>
+        <action id="com.guet.flexbox.handshake.new.package"
+                class="com.guet.flexbox.handshake.lang.NewPackageAction"
+                text="Flexml mock package"
+                description="New Flexml mock package json file">
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
         </action>
     </actions>
 
     <depends>com.intellij.modules.xml</depends>
     <depends>com.intellij.modules.lang</depends>
-    <depends>com.intellij.modules.java</depends>
     <depends>com.intellij.modules.json</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <configurationType implementation="com.guet.flexbox.handshake.compile.FlexmlCompileConfigurationType"/>
         <configurationType implementation="com.guet.flexbox.handshake.mock.FlexmlMockConfigurationType"/>
+        <runConfigurationProducer
+                implementation="com.guet.flexbox.handshake.compile.FlexmlCompileRunConfigurationProducer"/>
         <runConfigurationProducer
                 implementation="com.guet.flexbox.handshake.mock.FlexmlMockRunConfigurationProducer"/>
         <runLineMarkerContributor
+                language="JSON"
+                order="after applicationRunLineMarkerProvider"
+                implementationClass="com.guet.flexbox.handshake.mock.FlexmlMockRunLineMarkerContributor"/>
+        <runLineMarkerContributor
                 language="XML"
                 order="after applicationRunLineMarkerProvider"
-                implementationClass="com.guet.flexbox.handshake.lang.FlexmlRunLineMarkerContributor"/>
+                implementationClass="com.guet.flexbox.handshake.compile.FlexmlCompileRunLineMarkerContributor"/>
+        <internalFileTemplate name="package"/>
         <internalFileTemplate name="flexml_file"/>
         <completion.contributor
                 language="XML"

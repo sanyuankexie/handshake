@@ -1,4 +1,4 @@
-package com.guet.flexbox.handshake.lang
+package com.guet.flexbox.handshake.compile
 
 import com.guet.flexbox.handshake.util.isOnFlexmlFile
 import com.intellij.execution.lineMarker.ExecutorAction
@@ -10,7 +10,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlFile
 import com.intellij.util.containers.ContainerUtil
 
-class FlexmlRunLineMarkerContributor : RunLineMarkerContributor() {
+class FlexmlCompileRunLineMarkerContributor : RunLineMarkerContributor() {
     override fun getInfo(element: PsiElement): Info? {
         if (!element.isOnFlexmlFile) {
             return null
