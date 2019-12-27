@@ -28,9 +28,25 @@ class FlexmlTagNameProvider : DefaultXmlTagNameProvider() {
         if (!tag.isOnFlexmlFile) {
             return
         }
-        elements.addAll(allTags)
+        if (tag.name == "when") {
+            elements.addAll(
+                listOf(
+                    LookupElementBuilder.create("case")
+                        .withInsertHandler(XmlTagInsertHandler.INSTANCE)
+                        .withBoldness(true)
+                        .withIcon(tagIcon)
+                        .withTypeText("flexml component"),
+                    LookupElementBuilder.create("else")
+                        .withInsertHandler(XmlTagInsertHandler.INSTANCE)
+                        .withBoldness(true)
+                        .withIcon(tagIcon)
+                        .withTypeText("flexml component")
+                )
+            )
+        } else {
+            elements.addAll(allTags)
+        }
     }
-
 }
 
 

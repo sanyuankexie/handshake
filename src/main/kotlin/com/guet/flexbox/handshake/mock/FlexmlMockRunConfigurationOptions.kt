@@ -8,5 +8,5 @@ class FlexmlMockRunConfigurationOptions : LocatableRunConfigurationOptions() {
 
     var dataSource: String? by string()
 
-    var template: String? by string("../data.json")
+    var template: String? by string()
 }

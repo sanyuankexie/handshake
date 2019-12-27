@@ -21,7 +21,6 @@ class FlexmlMockRunConfigurationProducer : RunConfigurationProducer<FlexmlMockRu
             val file = context.psiLocation?.containingFile as? XmlFile
             if (file != null) {
                 return configuration.state?.template == file.virtualFile.path
-                        && configuration.name == "Mock ${file.virtualFile.name}"
             }
         }
         return false

@@ -9,9 +9,10 @@
     "flexml-components/when.json",
     "flexml-components/for.json",
     "flexml-components/for-each.json",
-    "flexml-components/native.json",
+    "flexml-components/mount.json",
     "flexml-components/stack.json",
     "flexml-components/image.json",
-    "flexml-components/scroller.json"
+    "flexml-components/scroller.json",
+    "flexml-components/case.json"
   ]
 }

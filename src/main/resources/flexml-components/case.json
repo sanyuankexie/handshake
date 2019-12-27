@@ -1,0 +1,8 @@
+{
+  "name": "case",
+  "attrs": {
+    "test": {
+      "required": true
+    }
+  }
+}
