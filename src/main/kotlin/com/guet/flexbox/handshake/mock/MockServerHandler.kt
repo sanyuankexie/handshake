@@ -29,68 +29,81 @@ class MockServerHandler(
     private var server: HttpServer? = null
 
     override fun onStart() {
-        val port = configuration.state?.port ?: 8080
-        val template = configuration.state?.template
-        if (template.isNullOrEmpty()) {
-            notifyTextAvailable("No target file found\n", ProcessOutputTypes.STDERR)
-            killProcess()
-            return
-        }
-        val dataSource = configuration.state?.dataSource
-        val fixedDataSource = if (dataSource.isNullOrEmpty()) {
-            File(File(template).parentFile, "data.json").absolutePath
-        } else {
-            dataSource
-        }
-        val server = HttpServer.create(InetSocketAddress(port), 0)
-        server.executor = AppExecutorUtil.getAppExecutorService()
-        server.createContext("/template") { httpExchange ->
-            println(httpExchange.remoteAddress.toString() + " request layout")
-            try {
-                httpExchange.sendResponseHeaders(200, 0)
-                JsonWriter(
-                    httpExchange.responseBody
-                        .writer()
-                        .buffered()
-                ).apply {
-                    isLenient = true
-                }.use { writer ->
-                    val jsonObject = Compiler.compile(template)
-                    Streams.write(jsonObject, writer)
-                }
-
-            } catch (e: Exception) {
-                val w = StringWriter()
-                e.printStackTrace(PrintWriter(w))
-                notifyTextAvailable(
-                    w.toString(),
-                    ProcessOutputTypes.STDERR
-                )
-            }
-        }
-        server.createContext("/datasource") { httpExchange ->
-            println(httpExchange.remoteAddress.toString() + " request datasource")
-            try {
-                httpExchange.sendResponseHeaders(200, 0)
-                val output = Channels.newChannel(httpExchange.responseBody)
-                val file = RandomAccessFile(fixedDataSource, "r")
-                val input = file.channel
-                input.transferTo(0, file.length(), output)
-                output.close()
-                file.close()
-            } catch (e: Exception) {
-                val w = StringWriter()
-                e.printStackTrace(PrintWriter(w))
-                notifyTextAvailable(
-                    w.toString(),
-                    ProcessOutputTypes.STDERR
-                )
-            }
-        }
         val address = findHostAddress()
         if (address != null) {
+            val port = configuration.state?.port ?: 8080
             val url = "http://$address:$port"
             println("host url：$url")
+            val template = configuration.state?.template
+            if (template.isNullOrEmpty()) {
+                notifyTextAvailable("No target file found\n", ProcessOutputTypes.STDERR)
+                killProcess()
+                return
+            }
+            val dataSource = configuration.state?.dataSource
+            val fixedDataSource = if (dataSource.isNullOrEmpty()) {
+                File(File(template).parentFile, "data.json").absolutePath
+            } else {
+                dataSource
+            }
+            val server = HttpServer.create(InetSocketAddress(port), 0)
+            server.executor = AppExecutorUtil.getAppExecutorService()
+            server.createContext("/") { httpExchange ->
+                val html = javaClass.classLoader.getResourceAsStream("host.html")
+                    ?.reader()?.readText()
+                if (html != null) {
+                    val out = String.format(html, "$url/template", "$url/datasource")
+                    httpExchange.sendResponseHeaders(200, 0)
+                    httpExchange.responseBody.writer().buffered().use {
+                        it.write(out)
+                    }
+                } else {
+                    httpExchange.sendResponseHeaders(404, 0)
+                }
+            }
+            server.createContext("/template") { httpExchange ->
+                println(httpExchange.remoteAddress.toString() + " request layout")
+                try {
+                    httpExchange.sendResponseHeaders(200, 0)
+                    JsonWriter(
+                        httpExchange.responseBody
+                            .writer()
+                            .buffered()
+                    ).apply {
+                        isLenient = true
+                    }.use { writer ->
+                        val jsonObject = Compiler.compile(template)
+                        Streams.write(jsonObject, writer)
+                    }
+
+                } catch (e: Exception) {
+                    val w = StringWriter()
+                    e.printStackTrace(PrintWriter(w))
+                    notifyTextAvailable(
+                        w.toString(),
+                        ProcessOutputTypes.STDERR
+                    )
+                }
+            }
+            server.createContext("/datasource") { httpExchange ->
+                println(httpExchange.remoteAddress.toString() + " request datasource")
+                try {
+                    httpExchange.sendResponseHeaders(200, 0)
+                    val output = Channels.newChannel(httpExchange.responseBody)
+                    val file = RandomAccessFile(fixedDataSource, "r")
+                    val input = file.channel
+                    input.transferTo(0, file.length(), output)
+                    output.close()
+                    file.close()
+                } catch (e: Exception) {
+                    val w = StringWriter()
+                    e.printStackTrace(PrintWriter(w))
+                    notifyTextAvailable(
+                        w.toString(),
+                        ProcessOutputTypes.STDERR
+                    )
+                }
+            }
             server.start()
             this.server = server
             EventQueue.invokeLater {
