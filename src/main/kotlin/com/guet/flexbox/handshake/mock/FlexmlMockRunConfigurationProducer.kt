@@ -22,6 +22,9 @@ class FlexmlMockRunConfigurationProducer : RunConfigurationProducer<FlexmlMockRu
         context: ConfigurationContext
     ): Boolean {
         val file = context.psiLocation?.containingFile as? JsonFile ?: return false
+        if (file.name != "package.json") {
+            return false
+        }
         val obj = file.topLevelValue?.let { it as? JsonObject }
         val template = obj?.findProperty("template") ?: return false
         val xmlName = template.value?.let { it as? JsonStringLiteral }?.value
@@ -40,6 +43,9 @@ class FlexmlMockRunConfigurationProducer : RunConfigurationProducer<FlexmlMockRu
         sourceElement: Ref<PsiElement>
     ): Boolean {
         val file = context.psiLocation?.containingFile as? JsonFile ?: return false
+        if (file.name != "package.json") {
+            return false
+        }
         val obj = file.topLevelValue?.let { it as? JsonObject }
         val template = obj?.findProperty("template") ?: return false
         val xmlName = template.value?.let { it as? JsonStringLiteral }?.value

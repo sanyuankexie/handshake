@@ -17,6 +17,9 @@ class FlexmlMockRunLineMarkerContributor : RunLineMarkerContributor() {
     override fun getInfo(element: PsiElement): Info? {
         val file = element.containingFile?.let { it as? JsonFile }
         val obj = file?.topLevelValue?.let { it as? JsonObject }
+        if (file?.name != "package.json") {
+            return null
+        }
         val template = obj?.findProperty("template")
         if (template == null || template != element) {
             return null
