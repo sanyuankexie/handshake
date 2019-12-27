@@ -29,7 +29,7 @@
     <actions>
         <!-- Add your actions here -->
         <action id="com.guet.flexbox.handshake.new"
-                class="com.guet.flexbox.handshake.NewFlexmlAction"
+                class="com.guet.flexbox.handshake.lang.NewFlexmlAction"
                 text="Flexml File"
                 description="新建flexml dsl文件">
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
@@ -42,17 +42,18 @@
     <depends>com.intellij.modules.json</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <configurationType implementation="com.guet.flexbox.handshake.FlexmlMockConfigurationType"/>
-        <runConfigurationProducer implementation="com.guet.flexbox.handshake.FlexmlMockRunConfigurationProducer"/>
+        <configurationType implementation="com.guet.flexbox.handshake.mock.FlexmlMockConfigurationType"/>
+        <runConfigurationProducer
+                implementation="com.guet.flexbox.handshake.mock.FlexmlMockRunConfigurationProducer"/>
         <runLineMarkerContributor
                 language="XML"
                 order="after applicationRunLineMarkerProvider"
-                implementationClass="com.guet.flexbox.handshake.FlexmlRunLineMarkerContributor"/>
+                implementationClass="com.guet.flexbox.handshake.lang.FlexmlRunLineMarkerContributor"/>
         <internalFileTemplate name="flexml_file"/>
         <completion.contributor
                 language="XML"
-                implementationClass="com.guet.flexbox.handshake.FlexmlCompletionContributor"/>
-        <fileTypeFactory implementation="com.guet.flexbox.handshake.FlexmlFileTypeFactory"/>
-        <xml.tagNameProvider implementation="com.guet.flexbox.handshake.FlexmlTagNameProvider"/>
+                implementationClass="com.guet.flexbox.handshake.lang.FlexmlCompletionContributor"/>
+        <fileTypeFactory implementation="com.guet.flexbox.handshake.lang.FlexmlFileTypeFactory"/>
+        <xml.tagNameProvider implementation="com.guet.flexbox.handshake.lang.FlexmlTagNameProvider"/>
     </extensions>
 </idea-plugin>

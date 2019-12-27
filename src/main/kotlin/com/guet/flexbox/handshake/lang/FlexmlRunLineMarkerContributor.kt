@@ -1,5 +1,6 @@
-package com.guet.flexbox.handshake
+package com.guet.flexbox.handshake.lang
 
+import com.guet.flexbox.handshake.util.isOnFlexmlFile
 import com.intellij.execution.lineMarker.ExecutorAction
 import com.intellij.execution.lineMarker.RunLineMarkerContributor
 import com.intellij.icons.AllIcons

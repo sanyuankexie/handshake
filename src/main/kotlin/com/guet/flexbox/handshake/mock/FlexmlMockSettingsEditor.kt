@@ -1,15 +1,16 @@
-package com.guet.flexbox.handshake
+package com.guet.flexbox.handshake.mock
 
 import com.intellij.openapi.options.SettingsEditor
 import javax.swing.JComponent
 
 class FlexmlMockSettingsEditor : SettingsEditor<FlexmlMockRunConfiguration>() {
 
-    private val from = FlexmlSettingFrom()
+    private val from = FlexmlMockSettingFrom()
 
     override fun resetEditorFrom(s: FlexmlMockRunConfiguration) {
-        from.textInput.text = "8080"
-        s.port = 8080
+        from.port.text = s.state?.port.toString()
+        from.dataSource.text = s.state?.dataSource
+        from.template.text = s.state?.template
     }
 
     override fun createEditor(): JComponent {
@@ -17,6 +18,8 @@ class FlexmlMockSettingsEditor : SettingsEditor<FlexmlMockRunConfiguration>() {
     }
 
     override fun applyEditorTo(s: FlexmlMockRunConfiguration) {
-        from.textInput.text = s.port.toString()
+        s.state?.port = from.port.text.toInt()
+        s.state?.dataSource = from.dataSource.text
+        s.state?.template = from.template.text
     }
 }

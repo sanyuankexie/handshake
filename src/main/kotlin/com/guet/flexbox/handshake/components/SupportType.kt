@@ -1,4 +1,4 @@
-package com.guet.flexbox.handshake.configs
+package com.guet.flexbox.handshake.components
 
 import com.google.gson.annotations.SerializedName
 

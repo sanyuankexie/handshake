@@ -1,5 +1,6 @@
-package com.guet.flexbox.handshake
+package com.guet.flexbox.handshake.util
 
+import com.guet.flexbox.handshake.lang.FlexmlFileType
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiElement
 import java.util.*

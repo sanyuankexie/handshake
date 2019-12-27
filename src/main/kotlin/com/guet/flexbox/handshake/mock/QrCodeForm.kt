@@ -1,11 +1,13 @@
-package com.guet.flexbox.handshake
+package com.guet.flexbox.handshake.mock
 
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import com.guet.flexbox.handshake.util.fileIcon
 import com.intellij.ui.JBColor
+import com.intellij.util.IconUtil
 import com.intellij.util.concurrency.AppExecutorUtil
 import com.intellij.util.ui.UIUtil
 import org.jdesktop.swingx.JXImageView
@@ -13,12 +15,15 @@ import java.awt.EventQueue
 import java.awt.Graphics2D
 import java.awt.Toolkit
 import java.awt.image.BufferedImage
+import java.lang.ref.WeakReference
+import java.util.concurrent.TimeUnit
 import javax.swing.JFrame
 
 class QrCodeForm(url: String) : JFrame() {
 
     init {
-        val size = 400
+        iconImage = IconUtil.toImage(fileIcon)
+        val size = 350
         title = "Display"
         defaultCloseOperation = DISPOSE_ON_CLOSE
         setSize(size, size)
@@ -31,6 +36,8 @@ class QrCodeForm(url: String) : JFrame() {
                 panel.image = image
             }
         }
+        panel.isDragEnabled = false
+        panel.isEditable = false
         panel.setSize(size, size)
         content.add(panel)
         isVisible = true
@@ -41,9 +48,18 @@ class QrCodeForm(url: String) : JFrame() {
         val screenWidth = screenSize.width //获取屏幕的宽
         val screenHeight = screenSize.height //获取屏幕的高
         isAlwaysOnTop = true
+        val cancel = CancelAlwaysOnTop(this)
+        AppExecutorUtil.getAppScheduledExecutorService().schedule({
+            EventQueue.invokeLater(cancel)
+        }, 100, TimeUnit.MILLISECONDS)
         setLocation(screenWidth / 2 - windowWidth / 2, screenHeight / 2 - windowHeight / 2)//设置窗口居中显示
     }
 
+    private class CancelAlwaysOnTop(referent: JFrame) : WeakReference<JFrame>(referent), Runnable {
+        override fun run() {
+            get()?.isAlwaysOnTop = false
+        }
+    }
 
     companion object {
         /**
@@ -79,7 +95,6 @@ class QrCodeForm(url: String) : JFrame() {
                         }
                     }
                 }
-
                 return image
             } catch (e: WriterException) {
                 throw RuntimeException(e)

@@ -1,5 +1,6 @@
-package com.guet.flexbox.handshake
+package com.guet.flexbox.handshake.lang
 
+import com.guet.flexbox.handshake.util.fileIcon
 import com.intellij.CommonBundle
 import com.intellij.ide.actions.CreateElementActionBase
 import com.intellij.ide.fileTemplates.FileTemplateManager

@@ -1,4 +1,4 @@
-package com.guet.flexbox.handshake
+package com.guet.flexbox.handshake.util
 
 import com.intellij.execution.KillableProcess
 import com.intellij.execution.process.ProcessHandler
@@ -6,6 +6,10 @@ import com.intellij.execution.process.ProcessOutputTypes
 import java.io.OutputStream
 
 abstract class EmbeddedProcessHandler : ProcessHandler(), KillableProcess {
+
+    abstract fun onStart()
+
+    abstract fun onDestroy()
 
     fun println(text: String) {
         notifyTextAvailable(text + "\n", ProcessOutputTypes.STDOUT)
@@ -15,10 +19,6 @@ abstract class EmbeddedProcessHandler : ProcessHandler(), KillableProcess {
         onStart()
         super.startNotify()
     }
-
-    abstract fun onStart()
-
-    abstract fun onDestroy()
 
     final override fun killProcess() {
         onDestroy()

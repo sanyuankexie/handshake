@@ -1,4 +1,4 @@
-package com.guet.flexbox.handshake
+package com.guet.flexbox.handshake.util
 
 import java.io.OutputStream
 

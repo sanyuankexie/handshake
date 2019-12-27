@@ -1,6 +1,8 @@
-package com.guet.flexbox.handshake
+package com.guet.flexbox.handshake.lang
 
-import com.guet.flexbox.handshake.configs.ComponentConfiguration
+import com.guet.flexbox.handshake.components.ComponentConfiguration
+import com.guet.flexbox.handshake.util.isOnFlexmlFile
+import com.guet.flexbox.handshake.util.tagIcon
 import com.intellij.codeInsight.completion.XmlTagInsertHandler
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder

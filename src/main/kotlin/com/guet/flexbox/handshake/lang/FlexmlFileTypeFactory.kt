@@ -1,4 +1,4 @@
-package com.guet.flexbox.handshake
+package com.guet.flexbox.handshake.lang
 
 import com.intellij.openapi.fileTypes.FileTypeConsumer
 import com.intellij.openapi.fileTypes.FileTypeFactory

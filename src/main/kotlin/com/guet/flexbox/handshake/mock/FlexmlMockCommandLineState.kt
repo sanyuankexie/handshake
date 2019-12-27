@@ -1,4 +1,4 @@
-package com.guet.flexbox.handshake
+package com.guet.flexbox.handshake.mock
 
 import com.intellij.execution.configurations.CommandLineState
 import com.intellij.execution.process.ProcessHandler

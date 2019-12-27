@@ -6,7 +6,7 @@
     "flexml-components/text-input.json",
     "flexml-components/empty.json",
     "flexml-components/flex.json",
-    "flexml-components/if.json",
+    "flexml-components/when.json",
     "flexml-components/for.json",
     "flexml-components/for-each.json",
     "flexml-components/native.json",
