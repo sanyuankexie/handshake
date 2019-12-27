@@ -5,12 +5,12 @@ import com.google.zxing.EncodeHintType
 import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import com.guet.flexbox.handshake.util.ImageView
 import com.guet.flexbox.handshake.util.fileIcon
 import com.intellij.ui.JBColor
 import com.intellij.util.IconUtil
 import com.intellij.util.concurrency.AppExecutorUtil
 import com.intellij.util.ui.UIUtil
-import org.jdesktop.swingx.JXImageView
 import java.awt.EventQueue
 import java.awt.Graphics2D
 import java.awt.Toolkit
@@ -23,36 +23,33 @@ class QrCodeForm(url: String) : JFrame() {
 
     init {
         iconImage = IconUtil.toImage(fileIcon)
-        val size = 350
-        title = "Display"
+        val size = 300
+        title = "Use playground to scan the QR code"
         defaultCloseOperation = DISPOSE_ON_CLOSE
         setSize(size, size)
         isResizable = false
         val content = contentPane
-        val panel = JXImageView()
+        val panel = ImageView()
         AppExecutorUtil.getAppExecutorService().execute {
             val image = generateQR(url, size)
             EventQueue.invokeLater {
                 panel.image = image
             }
         }
-        panel.isDragEnabled = false
-        panel.isEditable = false
         panel.setSize(size, size)
         content.add(panel)
-        isVisible = true
-        val windowWidth = width //获得窗口宽
-        val windowHeight = height //获得窗口高
         val kit = Toolkit.getDefaultToolkit() //定义工具包
         val screenSize = kit.screenSize //获取屏幕的尺寸
         val screenWidth = screenSize.width //获取屏幕的宽
         val screenHeight = screenSize.height //获取屏幕的高
+        setLocation(screenWidth / 2 - size / 2, screenHeight / 2 - size / 2)//设置窗口居中显示
+        isVisible = true
         isAlwaysOnTop = true
         val cancel = CancelAlwaysOnTop(this)
         AppExecutorUtil.getAppScheduledExecutorService().schedule({
             EventQueue.invokeLater(cancel)
         }, 100, TimeUnit.MILLISECONDS)
-        setLocation(screenWidth / 2 - windowWidth / 2, screenHeight / 2 - windowHeight / 2)//设置窗口居中显示
+
     }
 
     private class CancelAlwaysOnTop(referent: JFrame) : WeakReference<JFrame>(referent), Runnable {
@@ -70,6 +67,7 @@ class QrCodeForm(url: String) : JFrame() {
          */
         private fun generateQR(content: String, size: Int): BufferedImage {
             try {
+
                 val hintMap = HashMap<EncodeHintType, ErrorCorrectionLevel>()
                 hintMap[EncodeHintType.ERROR_CORRECTION] = ErrorCorrectionLevel.L
                 val qrCodeWriter = QRCodeWriter()
