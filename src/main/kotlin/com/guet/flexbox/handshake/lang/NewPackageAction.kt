@@ -29,7 +29,7 @@ class NewPackageAction : CreateElementActionBase("", "", fileIcon) {
 
     override fun create(newName: String, directory: PsiDirectory): Array<PsiElement> {
         if (directory.findSubdirectory(newName) != null) {
-            throw RuntimeException("MockPackage already exists")
+            throw RuntimeException("Package already exists")
         }
         val factory = PsiFileFactory.getInstance(directory.project)
         val packageText = FileTemplateManager.getInstance(directory.project)
