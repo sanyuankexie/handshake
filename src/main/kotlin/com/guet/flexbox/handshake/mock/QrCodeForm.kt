@@ -24,7 +24,7 @@ class QrCodeForm(url: String) : JFrame() {
     init {
         iconImage = IconUtil.toImage(fileIcon)
         val size = 300
-        title = "Use playground to scan the QR code"
+        title = "For playground"
         defaultCloseOperation = DISPOSE_ON_CLOSE
         setSize(size, size)
         isResizable = false
