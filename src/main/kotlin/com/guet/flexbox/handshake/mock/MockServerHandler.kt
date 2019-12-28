@@ -4,6 +4,7 @@ import com.google.gson.internal.Streams
 import com.google.gson.stream.JsonWriter
 import com.guet.flexbox.handshake.compile.Compiler
 import com.guet.flexbox.handshake.util.EmbeddedHandler
+import com.guet.flexbox.handshake.util.nowTime
 import com.intellij.execution.process.ProcessOutputTypes
 import com.intellij.util.concurrency.AppExecutorUtil
 import com.sun.net.httpserver.HttpServer
@@ -20,9 +21,11 @@ import java.net.InetSocketAddress
 import java.net.NetworkInterface
 import java.nio.channels.Channels
 
+
 class MockServerHandler(
     private val configuration: FlexmlMockRunConfiguration
 ) : EmbeddedHandler() {
+
 
     private var form: QrCodeForm? = null
 
@@ -62,7 +65,7 @@ class MockServerHandler(
                 }
             }
             server.createContext("/template") { httpExchange ->
-                println(httpExchange.remoteAddress.toString() + " request layout")
+                println(httpExchange.remoteAddress.toString() + " request layout at time $nowTime")
                 try {
                     httpExchange.sendResponseHeaders(200, 0)
                     JsonWriter(
@@ -86,7 +89,7 @@ class MockServerHandler(
                 }
             }
             server.createContext("/datasource") { httpExchange ->
-                println(httpExchange.remoteAddress.toString() + " request datasource")
+                println(httpExchange.remoteAddress.toString() + " request datasource at time $nowTime")
                 try {
                     httpExchange.sendResponseHeaders(200, 0)
                     val output = Channels.newChannel(httpExchange.responseBody)
