@@ -122,7 +122,7 @@ class MockServerHandler(
                         "sure that the mobile phone and the computer are on the same network",
                 ProcessOutputTypes.STDERR
             )
-            throw RuntimeException("Error searching for local IP")
+            killProcess()
         }
     }
 
