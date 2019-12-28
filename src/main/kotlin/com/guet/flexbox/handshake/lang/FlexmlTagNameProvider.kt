@@ -28,7 +28,7 @@ class FlexmlTagNameProvider : DefaultXmlTagNameProvider() {
         if (!tag.isOnFlexmlFile) {
             return
         }
-        if (tag.name == "when") {
+        if (tag.parentTag?.name == "when") {
             elements.addAll(
                 listOf(
                     LookupElementBuilder.create("case")
