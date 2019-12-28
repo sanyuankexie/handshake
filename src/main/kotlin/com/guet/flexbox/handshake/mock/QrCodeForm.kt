@@ -45,18 +45,16 @@ class QrCodeForm(url: String) : JFrame() {
         setLocation(screenWidth / 2 - size / 2, screenHeight / 2 - size / 2)//设置窗口居中显示
         isVisible = true
         isAlwaysOnTop = true
-        val cancel = CancelAlwaysOnTop(this)
+        val cancel = object : WeakReference<JFrame>(this), Runnable {
+            override fun run() {
+                get()?.isAlwaysOnTop = false
+            }
+        }
         AppExecutorUtil.getAppScheduledExecutorService().schedule({
             EventQueue.invokeLater(cancel)
         }, 100, TimeUnit.MILLISECONDS)
-
     }
 
-    private class CancelAlwaysOnTop(referent: JFrame) : WeakReference<JFrame>(referent), Runnable {
-        override fun run() {
-            get()?.isAlwaysOnTop = false
-        }
-    }
 
     companion object {
         /**
