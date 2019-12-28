@@ -9,9 +9,9 @@ object ComponentConfiguration {
     init {
         val gson = Gson()
         val classLoader = javaClass.classLoader
-        val group = classLoader.getResource("flexml-components/package.json")!!
-            .openStream()
-            .reader()
+        val group = classLoader.getResourceAsStream(
+            "flexml-components/package.json"
+        )!!.reader()
         val arr = gson.fromJson(
             group, ComponentGroup::class.java
         ).components
