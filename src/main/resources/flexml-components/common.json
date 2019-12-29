@@ -34,7 +34,15 @@
       ]
     },
     "margin": null,
+    "marginTop": null,
+    "marginLeft": null,
+    "marginRight": null,
+    "marginBottom": null,
     "padding": null,
+    "paddingTop": null,
+    "paddingLeft": null,
+    "paddingRight": null,
+    "paddingBottom": null,
     "borderColor": {
       "support": [
         "colors"
