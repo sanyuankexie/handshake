@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.guet.flexbox.handshake</id>
     <name>handshake</name>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <vendor email="imlkluo@qq.com" url="https://github.com/sanyuankexie/Gbox">sanyuankexie</vendor>
 
     <description><![CDATA[
