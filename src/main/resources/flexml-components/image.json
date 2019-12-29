@@ -1,7 +1,7 @@
 {
   "parent": "Common",
   "name": "Image",
-  "attr": {
+  "attrs": {
     "scaleType": {
       "support": [
         "values"
