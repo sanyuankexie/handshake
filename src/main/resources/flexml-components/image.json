@@ -20,6 +20,7 @@
     "blurSampling": null,
     "url": {
       "required": true
-    }
+    },
+    "aspectRatio": null
   }
 }

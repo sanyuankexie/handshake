@@ -1,9 +1,0 @@
-{
-  "parent": "Common",
-  "name": "Mount",
-  "attrs": {
-    "type": {
-      "required": true
-    }
-  }
-}
